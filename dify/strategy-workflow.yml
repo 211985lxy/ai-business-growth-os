@@ -1,0 +1,246 @@
+app:
+  description: 'AI Business Strategy Consultant - Generates comprehensive business strategies using McKinsey-style consulting framework'
+  icon: "\U0001F4A1"
+  icon_background: '#3B82F6'
+  mode: workflow
+  name: Strategy Consultant
+  use_icon_as_answer_icon: true
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+      - data:
+          sourceType: start
+          targetType: llm
+        id: start-llm
+        source: start
+        sourceHandle: source
+        target: llm
+        targetHandle: target
+        type: custom
+      - data:
+          sourceType: llm
+          targetType: end
+        id: llm-end
+        source: llm
+        sourceHandle: source
+        target: end
+        targetHandle: target
+        type: custom
+    nodes:
+      - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+          - label: User Query
+            max_length: 2000
+            options: []
+            required: true
+            type: paragraph
+            variable: user_query
+          - label: Brand Persona
+            max_length: 5000
+            options: []
+            required: false
+            type: paragraph
+            variable: context_persona
+          - label: Product Context
+            max_length: 5000
+            options: []
+            required: false
+            type: paragraph
+            variable: context_product
+        height: 126
+        id: start
+        position:
+          x: 80
+          y: 200
+        positionAbsolute:
+          x: 80
+          y: 200
+        width: 244
+      - data:
+        context:
+          enabled: true
+          variable_selector:
+            - user_query
+        desc: ''
+        model:
+          completion_params:
+            frequency_penalty: 0
+            max_tokens: 4096
+            presence_penalty: 0
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o
+          provider: openai
+        prompt_template:
+          - role: system
+            text: |
+              # You are a McKinsey-level Strategy Consultant
+
+              Your expertise includes:
+              - Strategic planning and market analysis
+              - Competitive intelligence and positioning
+              - Growth strategy and business model innovation
+              - Operational excellence and organizational design
+
+              # Your Task
+              Based on the user's business goal and the provided brand context, generate a comprehensive strategic plan.
+
+              # Available Context
+              {% if context_persona %}
+              **Brand Persona:**
+              {{context_persona}}
+
+              {% endif %}
+              {% if context_product %}
+              **Product/Service Context:**
+              {{context_product}}
+
+              {% endif %}
+              **User's Strategic Goal:**
+              {{#user_query#}}
+
+              # Required Output Format
+
+              Generate a Markdown-formatted strategic report with the following sections:
+
+              ## 1. Executive Summary
+              - 3-4 bullet points capturing the core strategic direction
+
+              ## 2. Situation Analysis
+              ### Current State Assessment
+              - Market position evaluation
+              - Internal capability analysis
+
+              ### Key Strategic Challenges
+              - Identify 3-5 critical challenges
+              - Prioritize by impact and urgency
+
+              ## 3. Market & Competitive Landscape
+              ### Market Trends
+              - Identify relevant market dynamics
+              - Highlight growth opportunities
+
+              ### Competitive Positioning
+              - Key competitors and their strengths
+              - Differentiation opportunities
+
+              ## 4. Strategic Framework
+              Apply relevant frameworks (e.g., SWOT, Porter's Five Forces, 3 Horizons) to structure analysis.
+
+              ### SWOT Analysis
+              | Strengths | Weaknesses |
+              |-----------|------------|
+              | | |
+              | | |
+
+              | Opportunities | Threats |
+              |--------------|---------|
+              | | |
+              | | |
+
+              ## 5. Strategic Recommendations
+              ### Core Strategy
+              - Define the central strategic thesis
+
+              ### Strategic Pillars (3-5 key initiatives)
+              For each pillar:
+              - **Objective**: What we aim to achieve
+              - **Actions**: Specific steps (3-5 per pillar)
+              - **Metrics**: Success indicators (KPIs)
+              - **Timeline**: Phased approach (0-3mo, 3-6mo, 6-12mo)
+
+              ## 6. Implementation Roadmap
+              ### Phase 1: Foundation (Month 0-3)
+              - Quick wins and foundational capabilities
+
+              ### Phase 2: Acceleration (Month 3-6)
+              - Scale successful initiatives
+
+              ### Phase 3: Optimization (Month 6-12)
+              - Refine and expand
+
+              ## 7. Risk Mitigation
+              ### Key Risks
+              - Identify top 3-5 risks
+              - Probability and impact assessment
+              - Mitigation strategies
+
+              ## 8. Resource Requirements
+              - Budget estimates
+              - Key talent needs
+              - Technology/infrastructure requirements
+
+              ## 9. Success Metrics & Monitoring
+              - Leading indicators (early signals)
+              - Lagging indicators (outcome measures)
+              - Review cadence recommendations
+
+              ---
+
+              **Consulting Principles to Apply:**
+              - Be hypothesis-driven and data-informed
+              - Provide actionable, specific recommendations (not generic advice)
+              - Consider both short-term wins and long-term positioning
+              - Balance ambition with feasibility
+              - Use the MECE framework (Mutually Exclusive, Collectively Exhaustive)
+
+              **Tone:** Professional, authoritative yet collaborative, structured, and insight-driven.
+        selected: false
+        title: Strategy Generator
+        type: llm
+        vision:
+          enabled: false
+        height: 126
+        id: llm
+        position:
+          x: 384
+          y: 200
+        positionAbsolute:
+          x: 384
+          y: 200
+        width: 244
+      - data:
+        desc: ''
+        outputs:
+          - value_selector:
+              - system
+            variable: system
+        selected: false
+        title: End
+        type: end
+        height: 126
+        id: end
+        position:
+          x: 688
+          y: 200
+        positionAbsolute:
+          x: 688
+          y: 200
+        width: 244
+  viewport:
+    x: 0
+    y: 0
+    zoom: 1

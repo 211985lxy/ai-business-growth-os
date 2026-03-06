@@ -1,0 +1,26 @@
+{
+  "recommendations": [
+    // 必备扩展
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+
+    // TypeScript 增强
+    "usernamehw.errorlens",
+    "streetsidesoftware.code-spell-checker",
+
+    // React/Next.js 增强
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+
+    // Git 增强
+    "eamodio.gitlens",
+    "github.copilot",
+
+    // 其他实用工具
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense"
+  ]
+}
